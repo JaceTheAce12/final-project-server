@@ -2,9 +2,16 @@ function generateRandomScore(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generateGolfScores(rounds, holes, playerName) {
+const generateRandomDate = () => {
+    const year = 2024;
+    const month = Math.floor(Math.random() * 12) + 1;
+    const day = Math.floor(Math.random() * 28) + 1;
+    return `${year}-${month}-${day}`;
+}
+
+function generateGolfScores(rounds, holes, playerName, courseIds) {
     const scores = [];
-    const date = "2024-11-13"; // Fixed date for simplicity
+    const date = generateRandomDate(); 
 
     for (let i = 0; i < rounds; i++) {
         const roundScores = {};
@@ -16,19 +23,24 @@ function generateGolfScores(rounds, holes, playerName) {
             totalScore += score;
         }
 
+        const courseId = courseIds[Math.floor(Math.random() * courseIds.length)];
+
         scores.push({
             date: date,
             playerName: playerName,
             round: i + 1,
-            scores: roundScores,
-            totalScore: totalScore
+            roundScores: roundScores,
+            totalScore: totalScore,
+            courseId: courseId 
         });
     }
 
     return scores;
 }
 
-const golfScores = generateGolfScores(4, 18, "Jace Randolph");
+const courseIds = [1, 2, 3, 4];
+
+const golfScores = generateGolfScores(10, 18, "Jace Randolph", courseIds);
 console.log(golfScores);
 
 const rounds = golfScores;
