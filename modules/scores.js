@@ -19,7 +19,7 @@ function generateGolfScores(rounds, holes, playerName, courseIds) {
 
         for (let j = 0; j < holes; j++) {
             const score = generateRandomScore(1, 10);
-            roundScores[j] = score.toString();
+            roundScores[j] = score;
             totalScore += score;
         }
 

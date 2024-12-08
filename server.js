@@ -41,7 +41,7 @@ app.get('/user-image', (req, res) => {
         const { imagePath } = JSON.parse(data);
         res.json({ success: true, imagePath });
     } else {
-        res.json({ success: false, message: 'No image was found' });
+        res.json({ success: false, message: 'No image found' });
     }
 });
 
@@ -59,6 +59,20 @@ app.post('/scores', (req, res) => {
     res.status(201).json(newRound);
 });
 
+app.put('/scores/:round', (req, res) => { 
+    const round = parseInt(req.params.round, 10);
+    const { roundIndex, holeIndex, newScore } = req.body;
+    const roundData = scores.find(roundData => roundData.round === round);
+
+    if (roundData) {
+        roundData.roundScores[holeIndex] = newScore;
+        roundData.totalScore = Object.values(roundData.roundScores).reduce((sum, score) => sum + score, 0);
+        res.json({ success: true });
+    } else {
+        res.status(404).json({ success: false, message: 'Round not found' });
+    }
+});
+
 app.delete('/scores/:id', (req, res) => {
     const id = parseInt(req.params.id, 10); 
     const index = scores.findIndex((round) => round.id === id);
@@ -66,7 +80,7 @@ app.delete('/scores/:id', (req, res) => {
         scores.splice(index, 1);
         res.status(204).end();
     } else {
-        res.status(404).json({ error: 'Round was not found' });
+        res.status(404).json({ error: 'Round not found' });
     }
 });
 
